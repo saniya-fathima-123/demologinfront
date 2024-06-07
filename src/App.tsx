@@ -23,23 +23,30 @@ const App: React.FC = () => {
     }
   };
   console.log(users);
+
   const handleRegister = async () => {
     try {
-      console.log("hasan");
+      
       const response = await axios.post(
         "https://demologin-2.onrender.com/api/v1/category/create",
         {
           categoryName: regUsername,
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          }
         }
       );
       setRegUsername("");
       fetchUsers();
       const data = response.data;
       console.log(data);
-    } catch (error: any) {
-      alert(`Error: ${error.message}`);
+    } catch (error) {
+      console.log(error)
     }
   };
+
 
   return (
     <div className="App">
