@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "./App.css";
+
 interface User {
   categoryName: string;
 }
+
 const App: React.FC = () => {
   const [regUsername, setRegUsername] = useState("");
   const [users, setUsers] = useState<User[]>([]);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     fetchUsers();
@@ -20,13 +23,17 @@ const App: React.FC = () => {
       setUsers(response.data);
     } catch (error) {
       console.error("Error fetching user data:", error);
+      setError("Failed to fetch users.");
     }
   };
-  console.log(users);
 
   const handleRegister = async () => {
+    if (!regUsername.trim()) {
+      setError("Category name cannot be empty.");
+      return;
+    }
+
     try {
-      
       const response = await axios.post(
         "https://demologin-2.onrender.com/api/v1/category/create",
         {
@@ -40,27 +47,28 @@ const App: React.FC = () => {
       );
       setRegUsername("");
       fetchUsers();
-      const data = response.data;
-      console.log(data);
+      console.log("Category created:", response.data);
     } catch (error) {
-      console.log(error)
+      console.error("Error creating category:", error);
+      setError("Failed to create category.");
     }
   };
-
 
   return (
     <div className="App">
       <h1>Category Page</h1>
+      {error && <p style={{ color: 'red' }}>{error}</p>}
       <input
         type="text"
         placeholder="Category Name"
         value={regUsername}
-        onChange={(e) => setRegUsername(e.target.value)}
+        onChange={(e) => {
+          setRegUsername(e.target.value);
+          setError(null); // Clear error message when user types
+        }}
       />
-
       <br />
       <button onClick={handleRegister}>Create Category</button>
-
       <table style={{ margin: "0 auto", marginTop: "50px" }}>
         <thead>
           <tr>
