@@ -15,7 +15,7 @@ const App: React.FC = () => {
   const fetchUsers = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:5000/api/v1/category/read"
+        "https://demologin-2.onrender.com/api/v1/category/read"
       );
       setUsers(response.data);
     } catch (error) {
@@ -27,7 +27,7 @@ const App: React.FC = () => {
     try {
       console.log("hasan");
       const response = await axios.post(
-        "http://localhost:5000/api/v1/category/create",
+        "https://demologin-2.onrender.com/api/v1/category/create",
         {
           categoryName: regUsername,
         }
